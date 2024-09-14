@@ -1,4 +1,5 @@
-![git-logo](/Users/imangozhang/Program/learning/工具/git/images/git-logo.png)
+
+![git-logo](https://github.com/user-attachments/assets/86e730d1-5d74-448e-8018-056010740cae)
 
 # 1.Git 简介
 
