@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html data-color-mode="light" data-dark-theme="dark" data-light-theme="light" lang="zh-CN">
+<head>
+    <meta content="text/html; charset=utf-8" http-equiv="content-type" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href='https://mirrors.sustech.edu.cn/cdnjs/ajax/libs/Primer/21.0.7/primer.css' rel='stylesheet' />
+    
+    <link rel="icon" href="https://github.githubassets.com/favicons/favicon.svg"><script>
+        let theme = localStorage.getItem("meek_theme") || "light";
+        document.documentElement.setAttribute("data-color-mode", theme);
+    </script>
+<meta name="description" content="![git-logo](/Users/imangozhang/Program/learning/工具/git/images/git-logo.png)
+
+# 1.Git 简介
+
+上大学时写论文，我的文件夹中躺着一堆文件：“溜溜球原理及应用.doc” 、“溜溜球原理及应用V2.doc”、“溜溜球原理及应用（最终版）.doc” 以及 “溜溜球原理及应用（最最最最终版）.doc” 等等，最后我都不记得哪个是哪个了……然后大神告诉我可以使用**版本控制**解决我的烦恼。">
+<meta property="og:title" content="Git 沉浸式学习">
+<meta property="og:description" content="![git-logo](/Users/imangozhang/Program/learning/工具/git/images/git-logo.png)
+
+# 1.Git 简介
+
+上大学时写论文，我的文件夹中躺着一堆文件：“溜溜球原理及应用.doc” 、“溜溜球原理及应用V2.doc”、“溜溜球原理及应用（最终版）.doc” 以及 “溜溜球原理及应用（最最最最终版）.doc” 等等，最后我都不记得哪个是哪个了……然后大神告诉我可以使用**版本控制**解决我的烦恼。">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://imangozhang.github.io/post/Git%20-chen-jin-shi-xue-xi.html">
+<meta property="og:image" content="https://github.githubassets.com/favicons/favicon.svg">
+<title>Git 沉浸式学习</title>
+<link href="//unpkg.com/@wooorm/starry-night@2.1.1/style/both.css" rel="stylesheet" />
+
+
+</head>
+<style>
+body{box-sizing: border-box;min-width: 200px;max-width: 900px;margin: 20px auto;padding: 45px;font-size: 16px;font-family: sans-serif;line-height: 1.25;}
+#header{display:flex;padding-bottom:8px;border-bottom: 1px solid var(--borderColor-muted, var(--color-border-muted));margin-bottom: 16px;}
+#footer {margin-top:64px; text-align: center;font-size: small;}
+
+</style>
+
+<style>
+.postTitle{margin: auto 0;font-size:40px;font-weight:bold;}
+.title-right{display:flex;margin:auto 0 0 auto;}
+.title-right .circle{padding: 14px 16px;margin-right:8px;}
+#postBody{border-bottom: 1px solid var(--color-border-default);padding-bottom:36px;}
+#postBody hr{height:2px;}
+#cmButton{height:48px;margin-top:48px;}
+#comments{margin-top:64px;}
+.g-emoji{font-size:24px;}
+@media (max-width: 600px) {
+    body {padding: 8px;}
+    .postTitle{font-size:24px;}
+}
+.copy-feedback {
+    display: none;
+    position: absolute;
+    top: 10px;
+    right: 50px;
+    color: var(--color-fg-on-emphasis);
+    background-color: var(--color-fg-muted);
+    border-radius: 3px;
+    padding: 5px 8px;
+    font-size: 12px;
+}
+</style>
+
+
+
+
+<body>
+    <div id="header">
+<h1 class="postTitle">Git 沉浸式学习</h1>
+<div class="title-right">
+    <a href="https://imangozhang.github.io" id="buttonHome" class="btn btn-invisible circle" title="首页">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathHome" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+    <a href="https://github.com/imangozhang/imangozhang.github.io/issues/1" target="_blank" class="btn btn-invisible circle" title="Issue">
+        <svg class="octicon" width="16" height="16">
+            <path id="pathIssue" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+    
+
+    <a class="btn btn-invisible circle" onclick="modeSwitch();" title="切换主题">
+        <svg class="octicon" width="16" height="16" >
+            <path id="themeSwitch" fill-rule="evenodd"></path>
+        </svg>
+    </a>
+
+</div>
+</div>
+    <div id="content">
+<div class="markdown-body" id="postBody"><p><a target="_blank" rel="noopener noreferrer" href="/Users/imangozhang/Program/learning/%E5%B7%A5%E5%85%B7/git/images/git-logo.png"><img src="/Users/imangozhang/Program/learning/%E5%B7%A5%E5%85%B7/git/images/git-logo.png" alt="git-logo" style="max-width: 100%;"></a></p>
+<h1>1.Git 简介</h1>
+<p>上大学时写论文，我的文件夹中躺着一堆文件：“溜溜球原理及应用.doc” 、“溜溜球原理及应用V2.doc”、“溜溜球原理及应用（最终版）.doc” 以及 “溜溜球原理及应用（最最最最终版）.doc” 等等，最后我都不记得哪个是哪个了……然后大神告诉我可以使用<strong>版本控制</strong>解决我的烦恼。</p>
+<h2>版本控制</h2>
+<p>版本控制是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制工具经过不断演进有很多类型：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="./images/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6.png"><img src="./images/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6.png" alt="" style="max-width: 100%;"></a></p>
+<h3>阶段一：本地版本控制系统</h3>
+<p>最早开始人们大多都是采用某种简单的本地数据库来记录文件的历次更新差异，例如 RCS。RCS 的工作原理是在硬盘上保存补丁集（补丁是指文件修订前后的变化）；通过应用所有的补丁，可以重新计算出各个版本的文件内容。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="mages/local-version.png"><img src="mages/local-version.png" alt="本地版本控制图解" style="max-width: 100%;"></a></p>
+<p>本地版本控制系统的缺点很明显，首先是如果本地磁盘出现问题，很容易丢失数据；其次，无法进行多人协作。</p>
+<h3>阶段二：中心化版本控制系统</h3>
+<p>为了解决上面的问题，人们设计了集中化的版本控制系统（Centralized Version Control Systems，简称 CVCS）。 这类系统，诸如 CVS、Subversion 以及 <strong>SVN</strong> 等，都有一个单一的集中管理的服务器，保存所有文件的修订版本，而协同工作的人们都通过客户端连到这台服务器，取出最新的文件或者提交更新。 多年以来，这已成为版本控制系统的标准做法。特别是 SVN 友好的图形化界面广受开发者青睐。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/centralized-version.png"><img src="images/centralized-version.png" alt="集中化的版本控制图解" style="max-width: 100%;"></a></p>
+<p>但是中心化版本控制系统仍然存在单点故障导致数据丢失的问题。</p>
+<h3>阶段三：分布式版本控制系统</h3>
+<p>为了解决单点问题，人们又设计了分布式版本控制系统（Distributed Version Control System，简称 DVCS）。在这类系统中，像 Git、Mercurial、Bazaar 以及 Darcs 等，客户端并不只提取最新版本的文件快照， 而是把代码仓库完整地镜像下来，包括完整的历史记录。 这么一来，任何一处协同工作用的服务器发生故障，事后都可以用任何一个镜像出来的本地仓库恢复。 因为每一次的克隆操作，实际上都是一次对代码仓库的完整备份。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/distributed-version.png"><img src="images/distributed-version.png" alt="分布式版本控制图解" style="max-width: 100%;"></a></p>
+<p>分布式版本控制系统似乎没有什么缺点了，可能唯一缺点就是成本高。不过个人开发者有 Github 开源免费的代码仓库应该够用了，企业开发一般都要开发自己的代码仓库。</p>
+<p>下面我们就开始介绍目前主流的版本控制工具：Git。</p>
+<h2>Git 特点</h2>
+<p>Git 是 Linux 内核开源社区开发的一套版本管理系统，具备以下特点：</p>
+<ul>
+<li>速度</li>
+<li>简单的设计</li>
+<li>对非线性开发模式的强力支持（允许成千上万个并行开发的分支）</li>
+<li>完全分布式</li>
+<li>有能力高效管理类似 Linux 内核一样的超大规模项目（速度和数据量）</li>
+</ul>
+<h3>直接记录快照，而非差异比较</h3>
+<p>Git 和其它版本控制系统的主要差别在于：其它大部分系统以文件变更列表的方式存储信息，即只存储一组基本文件和每个文件随时间逐步累积的差异 ，它们通常称作 <strong>基于差异（delta-based）</strong> 的版本控制；Git 是每次提交更新或保存项目状态时，对当时的全部文件创建一个快照并保存这个快照的索引， 为了效率，如果文件没有修改，Git 不再重新存储该文件，而是只保留一个链接指向之前存储的文件。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/delta-snapshot.png"><img src="images/delta-snapshot.png" alt="存储每个文件与初始版本的差异。" style="max-width: 100%;"></a></p>
+<h3>近乎所有操作都是本地执行</h3>
+<p>在 Git 中的绝大多数操作都只需要访问本地文件和资源，一般不需要来自网络上其它计算机的信息， 因为你在本地磁盘上就有项目的完整历史，所以大部分操作看起来瞬间完成。</p>
+<p>这也意味着你在离线或者没有 VPN 时，几乎可以进行任何操作。 如你在飞机或火车上想做些工作，就能愉快地提交（到你的 <strong>本地</strong> 副本，还记得吗？）， 直到有网络连接时再上传。</p>
+<h3>Git 保证完整性</h3>
+<p>Git 中所有的数据在存储前都计算校验和，然后以校验和来引用。 这意味着不可能在 Git 不知情时更改任何文件内容或目录内容。 这个功能建构在 Git 底层，是构成 Git 哲学不可或缺的部分。 若你在传送过程中丢失信息或损坏文件，Git 就能发现。</p>
+<p>Git 用以计算校验和的机制叫做 <code class="notranslate">SHA-1</code> 散列（hash，哈希）。 这是一个由 40 个十六进制字符（0-9 和 a-f）组成的字符串，基于 Git 中文件的内容或目录结构计算出来。 SHA-1 哈希看起来是这样：</p>
+<pre class="notranslate"><code class="notranslate">24b9da6552252987aa493b52f8696cd6d3b00373
+</code></pre>
+<p>Git 中使用这种哈希值的情况很多，你将经常看到这种哈希值。 实际上，Git 数据库中保存的信息都是以文件内容的哈希值来索引，而不是文件名。</p>
+<h1>2.Git 入门</h1>
+<h2>安装 Git</h2>
+<p>首先如果你的笔记本是 macOS  ，直接到这里下载 <a href="https://git-scm.com/download/mac" rel="nofollow">https://git-scm.com/download/mac</a> ，就别 <code class="notranslate">Xcode Command Line Tools</code> 下载了，太慢了……另外推荐你们使用 <a href="https://iterm2.com/" rel="nofollow"><strong>iTerm2</strong></a> 终端，笔记本自带的 iTerm1 略丑。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230412230743488.png"><img src="images/image-20230412230743488.png" alt="" style="max-width: 100%;"></a></p>
+<p>如果你是 Dbian 系统，请使用命令行安装：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ sudo apt install git-all</pre></div>
+<p>如果你是 centOS 系统，请使用 yum 包管理工具安装：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ yum install git-all</pre></div>
+<p>如果你是 Windows 系统，推荐在 <a href="https://desktop.github.com/">GitHub for indows</a> 下载。</p>
+<p><strong>下载安装很简单，下载完去 <a href="https://github.com/mbadolato/iTerm2-Color-Schemes">Github</a> 搜一个好看的主题，下载下来，按照上面的教程配置一下，你的 Git 终端就好看了。</strong></p>
+<p>我们上面提到过 Git 是一个分布式系统，不同开发者的本地需要和远程服务器保持同步，那我们的 Git 本地自然需要记录远程服务器的访问信息了。远程在哪里？</p>
+<p>自然是有一个开放的代码仓库 —— <a href="https://github.com/">GitHub</a>。我们需要到这里注册一个自己的账号，这样你就拥有了一个自己私人的远程仓库。然后在本地设置好用户名密码，方便后续同步远程仓库的代码：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git config --global user.name <span class="pl-s"><span class="pl-pds">"</span>John Doe<span class="pl-pds">"</span></span>
+$ git config --global user.email johndoe@example.com</pre></div>
+<p>接下来你就可以玩转 Git 了！如果有什么不懂的直接通过 help 去查：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git <span class="pl-c1">help</span></pre></div>
+<p>或者查具体某个指令怎么用：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git <span class="pl-c1">help</span> rebase</pre></div>
+<p>非常详细，比我还保姆……</p>
+<p>到目前为止，我们的工具已经齐全了：</p>
+<ul>
+<li>GitHub 远程仓库的账号密码</li>
+<li>本地的 Git 工具</li>
+</ul>
+<p>下面就可以开始干活儿了。</p>
+<h2>新建项目</h2>
+<p>老板让你新建一个项目供大家共同维护，你这时候有两个选择：</p>
+<ol>
+<li>可以去 GitHub 新建项目；</li>
+<li>本地新建项目，然后推送到 GitHub。</li>
+</ol>
+<h3>GitHub 新建项目</h3>
+<p>我们打开 GitHub 网页去新建项目：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230412234346201.png"><img src="images/image-20230412234346201.png" alt="" style="max-width: 100%;"></a></p>
+<p>这里你看到的 Owner 其实就是<strong>命名空间</strong>，以你自己的账号命名，也就是说这个项目创建好后是在你的命名空间下的。但是有个问题，如果这是一个多人合作的项目，放在你的个人空间下是不是就不合适了？</p>
+<p>此时你就需要为你们这个小组建一个组织了：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230412235712659.png"><img src="images/image-20230412235712659.png" alt="" style="max-width: 100%;"></a></p>
+<p>建好后你就可以把小伙伴们都拉进来，基于该组织空间去新建一个项目：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230412235841365.png"><img src="images/image-20230412235841365.png" alt="" style="max-width: 100%;"></a></p>
+<p>你还可以添加一个 <code class="notranslate">README</code> 文件，建好后远程仓库就搞定了。</p>
+<h3>本地新建仓库 -- git init</h3>
+<p>我们也可以在本地新建仓库：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ mkdir hello-world
+$ <span class="pl-c1">cd</span> hello-world
+$ git init</pre></div>
+<p>这样我们就创建了一个名为 <code class="notranslate">hello-world</code> 的 Git 仓库，然后进行修改和提交，最后推送到 GitHub。</p>
+<h2>克隆项目 -- git clone</h2>
+<p>接下来你就需要把远程这个仓库下载到你本地，我们称为克隆：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230413000331352.png"><img src="images/image-20230413000331352.png" alt="" style="max-width: 100%;"></a></p>
+<p>此时你就用到了实战的第一个命令 <code class="notranslate">git clone</code> ：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git clone https://github.com/chatplayers/gaoshiqing.git
+Cloning into <span class="pl-s"><span class="pl-pds">'</span>gaoshiqing<span class="pl-pds">'</span></span>...
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (3/3), done.</pre></div>
+<p>你有没有注意到我截图 HTTPS 链接旁边还有两个选项：SSH 和 GitHub CLI。我们常用的是 HTTPS 和 SSH ，GitHub CLI 是 GitHub 的一个命令行工具，用的人不多，所以这种拉取代码的方式我们就不赘述了。</p>
+<p>如果你想通过 SSH 的方式拉取，我们的本地需要通过 SSH 的方式访问远程仓库需要什么信息？了解过 Linux 的 <a href="https://cloud.tencent.com/developer/article/1594881" rel="nofollow"><strong>ssh 命令</strong> </a>的应该知道需要公钥和私钥。</p>
+<p>所以需要你首先在本地生成一对公钥和私钥（注意指定好你要生成的密钥放在什么位置，不指定的话默认会生成到 <code class="notranslate">~/.ssh</code> 目录下）：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ ssh-keygen -o</pre></div>
+<p>以 <code class="notranslate">id_rsa</code> 命名生成后私钥为 <code class="notranslate">id_rsa</code> 文件，公钥为 <code class="notranslate">id_rsa.pub</code> 文件：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230413002230017.png"><img src="images/image-20230413002230017.png" alt="" style="max-width: 100%;"></a></p>
+<p>你现在只需要把公钥中的内容保存到远程 <code class="notranslate">GitHub</code> 仓库的配置项中即可：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230413002609206.png"><img src="images/image-20230413002609206.png" alt="" style="max-width: 100%;"></a></p>
+<p>然后你就可以通过 ssh 方式拉取代码了：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git clone git@github.com:chatplayers/gaoshiqing.git</pre></div>
+<p>假如你还有一台笔记本，那也是一样的操作，在另一台笔记本上生成 ssh 密钥，然后上传公钥即可。</p>
+<blockquote>
+<p><strong>本地仓库 vs. 远程仓库</strong></p>
+<p>我们从远程克隆代码到本地，本地这个项目我们就称之为<strong>本地仓库</strong>，我们在本地对文件进行任何更改，以及各种 git 操作，只要你不把这些变更**推送（<code class="notranslate">git pull</code> ）**到远程仓库，就不会对远程仓库造成任何影响。</p>
+</blockquote>
+<h2>查看文件状态 -- git status</h2>
+<p>拉取下来项目后，在项目下一通 coding ……快下班了你想把今天的成果提交到远程仓库。</p>
+<p>首先，你要知道今天你改了哪些东西？要提交哪些东西？这时候就要使用 <code class="notranslate">git status</code> 查询一下你本地仓库中文件的状态：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git status
+On branch main
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+
+Changes not staged <span class="pl-k">for</span> commit:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git add &lt;file&gt;...<span class="pl-pds">"</span></span> to update what will be committed)
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore &lt;file&gt;...<span class="pl-pds">"</span></span> to discard changes <span class="pl-k">in</span> working directory)
+    modified:   README.md
+
+Untracked files:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git add &lt;file&gt;...<span class="pl-pds">"</span></span> to include <span class="pl-k">in</span> what will be committed)
+    hello.yaml</pre></div>
+<p>可以看到描述展示了两部分内容：<code class="notranslate">Changes not staged for commit</code> 文件 <code class="notranslate">README.md</code> ，还有一个 文件 <code class="notranslate">Untracked</code> 文件  <code class="notranslate">hello.yaml</code>。Git 把文件的生命周期分为 4 个阶段：</p>
+<ul>
+<li>Untracked 新创建的文件</li>
+<li>Unmodified 没有变更的文件</li>
+<li>Modified 发生变更的文件（ Changes not staged for commit）</li>
+<li>Staged 暂存区的文件</li>
+</ul>
+<blockquote>
+<p><strong>什么是暂存区？</strong></p>
+<p>你可以理解为是本地存储，你每次执行 <code class="notranslate">git add</code> 可以把你修改的文件添加到这里，然后提交代码（执行 <code class="notranslate">git commi</code>）时一次性把暂存区所有文件提交到本地仓库。</p>
+</blockquote>
+<p>这四种状态流转如下图所示：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/status.png"><img src="images/status.png" alt="" style="max-width: 100%;"></a></p>
+<ol>
+<li>只有你编辑了文件，文件状态就会从 Unmodifed 变成 Modified</li>
+<li>执行 <code class="notranslate">git add</code> 命令可以将新创建的文件、变更的文件加入暂存区</li>
+<li>执行 <code class="notranslate">git reset</code> 命令可以将文件从暂存区剔除（你修改的内容不会丢失，只是从暂存区拿出来）</li>
+<li>执行 <code class="notranslate">git checkout</code> 命令可以擦除对文件的变更</li>
+<li>执行 <code class="notranslate">git rm</code> 命令可以删除一个文件，如果这次删除记录还没有提交到暂存区，文件状态会变为 Untracked</li>
+<li>执行 <code class="notranslate">git commit</code> 命令可以将暂存区的文件</li>
+</ol>
+<h2>对比文件差异 -- git diff</h2>
+<p>可是问题来了，我不确定修改的这个文件具体改了什么，应不应该提交，怎么办？使用 <code class="notranslate">git diff</code> 查看文件变更详情：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git diff README.md
+diff --git a/README.md b/README.md
+index 1789257..efdd44c 100644
+--- a/README.md
++++ b/README.md
+@@ -1,2 +1,3 @@
+ <span class="pl-c"><span class="pl-c">#</span> gaoshiqing</span>
+ 大家一起搞事情！
++new words
+(END)</pre></div>
+<p>可以看到我新增了一行：new words ，+ 代表新增，- 代表删除。</p>
+<h2>撤销文件变更 -- git checkout</h2>
+<p>我对一个文件一通修改，后来发现改的不对，想恢复到改动前的状态，怎么办？使用 <code class="notranslate">git checkout</code> 命令擦除你上次提交之后到现在的所有修改：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git checkout README.md
+$ git status
+On branch main
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+
+Changes to be committed:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore --staged &lt;file&gt;...<span class="pl-pds">"</span></span> to unstage)
+    new file:   hello.yaml</pre></div>
+<p>可以看到之前对 <code class="notranslate">README.md</code> 文件的修改已经被擦除了。</p>
+<h2>添加文件到暂存区 -- git add</h2>
+<p>当你准备要提交代码了，我们上面说过，提交代码其实是把你放到暂存区的文件一次性提交到本地仓库。所以你需要先把要提交的代码通过 <code class="notranslate">git add</code> 添加到暂存区：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git add README.md
+$ git add hello.yaml</pre></div>
+<p>然后我们再来看此时工作区的文件状态：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git status
+On branch main
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+
+Changes to be committed:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore --staged &lt;file&gt;...<span class="pl-pds">"</span></span> to unstage)
+    modified:   README.md
+    new file:   hello.yaml</pre></div>
+<p>可以看到这两个文件已经变成 <code class="notranslate">Staged</code>（<code class="notranslate">Changes to be committed</code>）了。加入我此时对 <code class="notranslate">hello.yaml</code> 又进行了修改，会是什么样子？</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ <span class="pl-c1">echo</span> <span class="pl-s"><span class="pl-pds">"</span>hello: <span class="pl-cce">\"</span>world<span class="pl-cce">\"</span><span class="pl-pds">"</span></span> <span class="pl-k">&gt;</span> hello.yaml
+$ git status
+On branch main
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+
+Changes to be committed:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore --staged &lt;file&gt;...<span class="pl-pds">"</span></span> to unstage)
+    modified:   README.md
+    new file:   hello.yaml
+
+Changes not staged <span class="pl-k">for</span> commit:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git add &lt;file&gt;...<span class="pl-pds">"</span></span> to update what will be committed)
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore &lt;file&gt;...<span class="pl-pds">"</span></span> to discard changes <span class="pl-k">in</span> working directory)
+    modified:   hello.yaml</pre></div>
+<p>可以看到有两个待提交的文件：</p>
+<ul>
+<li>README.md</li>
+<li>hello.yaml</li>
+</ul>
+<p>还有一个发生变更的文件：</p>
+<ul>
+<li>hello.yaml</li>
+</ul>
+<p>这是怎么回事呢？怎么会有两个 hello.yaml …… 其实，我们每次执行 <code class="notranslate">git add</code> 你可以理解为是保存当时的一次文件快照到暂存区。之后发生的变更是不会自动更新到暂存区的，如果你此时直接提交代码，那只会把暂存区的快照内容提交，而不会提交你后续对 <code class="notranslate">hello.yaml</code> 文件的变更。要想一起提交，你需要再次执行 <code class="notranslate">git add hello.yaml</code> 命令，这样会覆盖之前保存到暂存区的快照：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git add hello.yaml
+$ git status
+On branch main
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+
+Changes to be committed:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore --staged &lt;file&gt;...<span class="pl-pds">"</span></span> to unstage)
+    modified:   README.md
+    new file:   hello.yaml</pre></div>
+<h2>撤销暂存区的内容 -- git reset [file_name]</h2>
+<p>有个文件我加入到了暂存区，但是我突然想起有问题，暂时还不想提交，怎么办？—— 此时需要执行 <code class="notranslate">git reset</code> 命令。：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git reset README.md
+$ git status
+On branch main
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+
+Changes to be committed:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore --staged &lt;file&gt;...<span class="pl-pds">"</span></span> to unstage)
+    new file:   hello.yaml
+
+Changes not staged <span class="pl-k">for</span> commit:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git add &lt;file&gt;...<span class="pl-pds">"</span></span> to update what will be committed)
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore &lt;file&gt;...<span class="pl-pds">"</span></span> to discard changes <span class="pl-k">in</span> working directory)
+    modified:   README.md</pre></div>
+<p>可以看到 <code class="notranslate">README.md</code> 文件已经从暂存区移除了，变成了已变更的状态。</p>
+<p><code class="notranslate">git reset</code> 命令除了可以撤销暂存区的内容，还可以撤销已提交的内容，我们稍后说。</p>
+<h2>提交暂存区文件到本地仓库 -- git commit</h2>
+<p>好了，现在工作结束了，你可以提交代码了。当然前提是你已经通过 <code class="notranslate">git add</code> 将需要提交的文件都加入到了暂存区，那你只需要执行 <code class="notranslate">git commit -m</code> 就可以把暂存区的所有内容都提交到本地仓库了：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git commit -m <span class="pl-s"><span class="pl-pds">"</span>add new file hello.yaml<span class="pl-pds">"</span></span>
+[main 7caf9b0] add new file hello.yaml
+ 1 file changed, 1 insertion(+)
+ create mode 100644 hello.yaml</pre></div>
+<p>当你提交后发现，哎我还有一个文件忘记提交了，或者又改了一些代码，这些代码本应该和上一次提交合到一起才合理，你怎么办？再进行 <code class="notranslate">git add</code> 然后 <code class="notranslate">git commit -m "追加 xxx 文件"</code> ？可是这样提交日志里会记录很多次提交，不方便后面代码 <code class="notranslate">review</code> 。我们可以执行  <code class="notranslate">git add</code> 然后 <code class="notranslate">git commit --amend</code> 就可以和上一次提交合并到一起了：</p>
+<p>注意，我们此时仅仅是将此次变更提交到了<strong>本地仓库</strong>，如果你这是去 GitHub 远程仓库查找，是看不到这次变更内容的。我们仔细看一下提交结果中有一个 <code class="notranslate">[main 7caf9b0]</code> ，这是干什么的？</p>
+<p>前面的 <code class="notranslate">main</code> 代表当前所在<strong>分支</strong>，分支的概念我们后面讲；后面这个字符串是一个 Hash 字符串，唯一标识了这次提交，这其实就是指向这次提交的快照的指针 ，可以这样理解：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/commits.png"><img src="images/commits.png" alt="提交对象及其父对象。" style="max-width: 100%;"></a></p>
+<blockquote>
+<p><strong>HEAD</strong></p>
+<p>HEAD 表示当前分支所在的提交节点位置，我们可以通过 <code class="notranslate">git reset</code> 调整 HEAD 指针的位置，后面在讲到 。</p>
+</blockquote>
+<h2>查看提交日志 -- git log</h2>
+<p>我们上面进行了提交，去哪里可以看到这次的操作日志呢？执行 <code class="notranslate">git log</code> 查看当前分支上的所有提交记录：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git log
+commit 7caf9b01e0832235a108478f1392ec2c664c921b (HEAD -<span class="pl-k">&gt;</span> main)
+Date:   Fri Apr 14 14:07:08 2023 +0800
+
+    add new file hello.yaml
+
+commit f0074234a4358e1d00aba75fe51b8dffdbb5f8d1 (origin/main, origin/HEAD)
+Date:   Thu Apr 13 00:01:47 2023 +0800
+
+    Initial commit</pre></div>
+<p>可以看到最近一次提交的 HashCode 前几位和我们刚刚 <code class="notranslate">git commit</code> 的结果一致。</p>
+<h2>撤销提交 -- git reset [commit_id]</h2>
+<p>假如我发现刚刚提交的代码有些问题，需要撤销怎么办？</p>
+<p>前面已经提过了，可以执行 <code class="notranslate">git reset commit_id</code> 的方式回退到指定的提交节点。 例如我要撤销刚刚的 <code class="notranslate">7caf9b0</code> 这次提交，那我回退到这次提交的前一个节点，也就是 <code class="notranslate">f0074234a</code> 这次提交：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git reset f0074234a</pre></div>
+<p>然后我们看一下文件状态：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git status
+On branch main
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+
+Untracked files:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git add &lt;file&gt;...<span class="pl-pds">"</span></span> to include <span class="pl-k">in</span> what will be committed)
+    hello.yaml
+
+nothing added to commit but untracked files present (use <span class="pl-s"><span class="pl-pds">"</span>git add<span class="pl-pds">"</span></span> to track)</pre></div>
+<p>又恢复到了提交前的状态。然后我们看一下提交日志：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git log
+commit f0074234a4358e1d00aba75fe51b8dffdbb5f8d1 (HEAD -<span class="pl-k">&gt;</span> main, origin/main, origin/HEAD)
+Date:   Thu Apr 13 00:01:47 2023 +0800
+    Initial commit</pre></div>
+<p>可以看到刚刚的提交日志也被清理了。</p>
+<blockquote>
+<p>**tips：**我上面只想撤销一次提交，所以只需要回退到了上一个节点，假如你想撤销前面的连续几次提交也是一样的道理，你只要把 commit_id 指定为要回退到的节点就可以了。</p>
+</blockquote>
+<h2>推送文件到远程仓库 -- git push</h2>
+<p>我们把代码提交到本地仓库就完事儿了吗？没有，别忘记现在远程仓库还没有我们的代码呢！所以需要执行 <code class="notranslate">git push [仓库地址（可不填）] [分支名称（可不填）]</code> 命令将代码提交到远程仓库，如果后面的参数不填写，默认仓库为 <code class="notranslate">origin</code> ，分支为主干分支 <code class="notranslate">main</code>：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git push</pre></div>
+<p>如果你成功了，那你很幸运。你也可能会失败，别着急往下看……</p>
+<h2>管理远程仓库信息 -- git remote</h2>
+<p>如果你是第一次推送代码到远程仓库，可能直接推送成功了，也可能需要你输入 GitHub 账号密码，而且最后还失败了，例如：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git push
+Username <span class="pl-k">for</span> <span class="pl-s"><span class="pl-pds">'</span>https://github.com<span class="pl-pds">'</span></span>: imangozhang
+Password <span class="pl-k">for</span> <span class="pl-s"><span class="pl-pds">'</span>https://imangozhang@github.com<span class="pl-pds">'</span></span>:
+fatal: Authentication failed <span class="pl-k">for</span> <span class="pl-s"><span class="pl-pds">'</span>https://github.com/chatplayers/gaoshiqing.git/<span class="pl-pds">'</span></span></pre></div>
+<p>这是咋回事呢？这其实取决于我们的本地仓库和远程仓库是如何联系起来的……执行 <code class="notranslate">git remote</code> 命令可以管理这个关系。</p>
+<p>首先，执行 <code class="notranslate">git remote -v</code> 可以查看远程仓库的地址：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git remote -v
+origin  https://github.com/chatplayers/gaoshiqing.git (fetch)
+origin  https://github.com/chatplayers/gaoshiqing.git (push)</pre></div>
+<p>这个地址是不是很眼熟？还记得第一步我克隆项目时的命令吗？</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git clone https://github.com/chatplayers/gaoshiqing.git</pre></div>
+<p>没错，这里记录的就是当时我们克隆时的远程仓库地址。那我这里为什么失败了呢？上面的提示：**基于密码的鉴权方式已经在 2021.8.13 之后就禁用了，详情查看 <a href="https://docs.github.com/en">https://docs.github.com/en</a>... **。我们打开这个网址会看到：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="/Users/imangozhang/Library/Application Support/typora-user-images/image-20230414200118488.png"><img src="/Users/imangozhang/Library/Application Support/typora-user-images/image-20230414200118488.png" alt="image-20230414200118488" style="max-width: 100%;"></a></p>
+<p>哦，也就是说如果你维护的远程仓库地址是 https 格式的，要想执行 <code class="notranslate">git push</code>  等命令操作远程仓库，只能用 <code class="notranslate">access token</code> 的方式了，然后你需要根据这个链接的教程去创建一个 <code class="notranslate">access token</code> ，后续操作远程仓库时输入用户名和密钥即可。</p>
+<p>但是这样其实很麻烦，用 ssh 的方式更简单一些，我们第一步在克隆项目时如何配置已经详细讲过了，你就按照上面的去配置一下公钥，然后执行 <code class="notranslate">git removte set-url </code>修改一下远程分支的地址就可以了：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git remote set-url origin git@github.com:chatplayers/gaoshiqing.git</pre></div>
+<p>然后重新提交代码就成功了：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git push
+Enumerating objects: 4, done.
+To github.com:chatplayers/gaoshiqing.git
+   f007423..7666bc2  main -<span class="pl-k">&gt;</span> main</pre></div>
+<h2>同步远程仓库 -- git pull</h2>
+<p>我们提交了代码后，其他小伙伴想在我们的基础上去继续修改怎么办呢？他们当初也克隆了这个项目，可是他们的本地仓库并没有我们的提交内容啊……他们只需要执行 <code class="notranslate">git pull</code>  就可以把远程仓库的最新提交都同步到本地了：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git pull
+remote: Enumerating objects: 5, done.
+From github.com:chatplayers/gaoshiqing
+   7666bc2..3cfcc68  main       -<span class="pl-k">&gt;</span> origin/main
+Updating 7666bc2..3cfcc68
+Fast-forward
+ hello.yaml <span class="pl-k">|</span> 4 ++++
+ 1 file changed, 4 insertions(+)</pre></div>
+<p>这里会告诉我们，相比于我们的本地仓库，同步远程仓库后发生了哪些变更。</p>
+<blockquote>
+<p><strong><code class="notranslate">git pull</code> vs. <code class="notranslate">git fetch</code></strong></p>
+<p>同步远程仓库的命令除了 <code class="notranslate">git pull</code> 还有一个经常用的 <code class="notranslate">git fetch</code>:<strong><code class="notranslate">git pull</code> = <code class="notranslate">git fetch</code> + <code class="notranslate">git merge</code></strong></p>
+<ul>
+<li><code class="notranslate">git fetch</code> 只是单纯把远程仓库的某个分支同步到本地仓库，如果和本地仓库进度不一致，需要手动执行 <code class="notranslate">git merge</code></li>
+<li><code class="notranslate">git pull</code> 同步远程仓库后，自动合并。</li>
+</ul>
+</blockquote>
+<h2>忽略文件变更 -- .gitignore</h2>
+<p>有时候我们的项目里有些文件会随着我们的修改不断变更的，但是这些文件的变更对我们项目而言没什么用，所以不需要每次都提交，那这时候我们最好可以忽略这些文件的变更。在这种情况下，我们可以创建一个名为 <code class="notranslate">.gitignore</code> 的文件，列出要忽略的文件的模式，例如：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ cat .gitignore
+<span class="pl-k">*</span>.DS_Store</pre></div>
+<p>这是一个正则表达式，表示忽略该项目中所有以 <code class="notranslate">.DS_Store</code> 结尾的文件变更。</p>
+<h1>3.Git 进阶</h1>
+<p>当你完成了上面的练习，是不是觉得自己已经可以玩转 Git 了？那你就太年轻了……</p>
+<p>我们前面说过，你这个项目可能是好几个人甚至成百上千人共同维护，你有没有想过这些问题：</p>
+<ul>
+<li>你刚刚写好推送到远程仓库，然后别别人同步后一通乱改然后提交了，你怎么办？</li>
+<li>你和别人都在修改同一个文件的同一个地方，你俩都往远程分支推送代码，此时以谁的为准？</li>
+<li>假如你准备基于现在最新的代码部署到生产环境，可是恰巧有人又提交上来一些代码，还是错的，这怎么办？</li>
+</ul>
+<p>……</p>
+<p>类似问题还有很多，几乎所有的版本控制系统都是通过<strong>分支</strong>来解决这些问题的，Git 也一样。</p>
+<h2>分支简介</h2>
+<p>我们上面讲解 <code class="notranslate">git commit</code> 的时候，讲到 <code class="notranslate">git commit</code> 命令执行完后返回了  <code class="notranslate">[main 7caf9b0]</code>  内容，前面就是分支名称，后面是指向此次提交后的指针。我们现在只有一条主干链路，就是 <code class="notranslate">main</code> ，我们把这条链路称为<strong>主干分支</strong>。这个 <code class="notranslate">main</code> 你可以看作指向主干分支最新提交的头节点。</p>
+<p>如果你想基于现在最新提交自己一个人搞事情，不想受其他人代码提交的干扰，怎么办呢？那就要创建一个分支了……</p>
+<h2>分支管理</h2>
+<h3>新建分支 -- git checkout -b</h3>
+<p>假如你要独立开发一个 <a href="https://oauth.net/2/" rel="nofollow">oauth</a> 的需求，可以通过 <code class="notranslate">git checkout -b [新分支名称] [源分支名称（可不填）]</code> 创建一个分支。源分支填和不填有什么区别呢？</p>
+<ul>
+<li>不填源分支默认基于本地仓库当前分支切新分支</li>
+<li>填源分支可以指定基于远程仓库或者本地仓库的某个分支切新分支</li>
+</ul>
+<p>例如我们想基于现在最新的主干分支 <code class="notranslate">main</code> 来切一个新分支 <code class="notranslate">feature/oauth</code> ，有两种方式。</p>
+<ul>
+<li>方式一</li>
+</ul>
+<p>我们先把本地仓库同步到最新，然后基于本地仓库的 <code class="notranslate">main</code> 分支来切新分支：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git pull
+From https://github.com/chatplayers/gaoshiqing
+   f007423..3cfcc68  main       -<span class="pl-k">&gt;</span> origin/main
+Updating f007423..3cfcc68
+Fast-forward
+$ git checkout -b feature/oauth
+branch <span class="pl-s"><span class="pl-pds">'</span>feature/oauth<span class="pl-pds">'</span></span> <span class="pl-c1">set</span> up to track <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+Switched to a new branch <span class="pl-s"><span class="pl-pds">'</span>feature/oauth<span class="pl-pds">'</span></span></pre></div>
+<ul>
+<li>方式二</li>
+</ul>
+<p>我们直接基于远程仓库最新的 <code class="notranslate">main</code> 分支来切新分支：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git checkout -b feature/oauth origin/main
+branch <span class="pl-s"><span class="pl-pds">'</span>feature/oauth<span class="pl-pds">'</span></span> <span class="pl-c1">set</span> up to track <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.
+Switched to a new branch <span class="pl-s"><span class="pl-pds">'</span>feature/oauth<span class="pl-pds">'</span></span></pre></div>
+<p>创建好分支后，我们的流程图就更新为：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/git-new-branch.png"><img src="images/git-new-branch.png" alt="" style="max-width: 100%;"></a></p>
+<p>可以看到当前的 <code class="notranslate">feature/oauth</code> 分支和 <code class="notranslate">main</code> 分支都指向了同一个提交节点，后续随着你不断的在该分支上提交内容，<code class="notranslate">feature/oauth</code> 会向后移动：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/git-branch-commit.png"><img src="images/git-branch-commit.png" alt="" style="max-width: 100%;"></a></p>
+<h3>查询分支 -- git branch</h3>
+<p>我们刚刚新建了分支，可以通过 <code class="notranslate">git branch</code> 命令查看仓库中的所有分支（包括远程和本地）：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git branch
+<span class="pl-k">*</span> feature/oauth
+  main
+(END)</pre></div>
+<p>你也可以执行 <code class="notranslate">git branch -v</code> 命令查看各分支的最后一次提交：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git branch -v
+<span class="pl-k">*</span> feature/oauth 3643f28 [ahead 2] add name <span class="pl-k">for</span> hello.yaml
+  main          3cfcc68 Update hello.yaml
+(END)</pre></div>
+<p>你注意到 * 了吗？* 表示当前操作所在的分支，我们刚刚不是在 <code class="notranslate">master</code> 分支么，怎么就到了<code class="notranslate">feature/oauth</code> 分支了？其实是我们一开始执行 <code class="notranslate">git checkout -b</code> 时自动就帮我们切换过来了，回去看一下新建分支是命令执行结果最后一行：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">Switched to a new branch <span class="pl-s"><span class="pl-pds">'</span>feature/oauth<span class="pl-pds">'</span></span></pre></div>
+<h3>切换分支 -- git checkout [branch_name]</h3>
+<p>如果我们想切换到其它分支做一些其他的修改怎么操作？执行 <code class="notranslate">git checkout [分支名称]</code> 命令：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git checkout main
+Switched to branch <span class="pl-s"><span class="pl-pds">'</span>main<span class="pl-pds">'</span></span>
+Your branch is up to date with <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span>.</pre></div>
+<h3>删除分支 -- git branch -d/D</h3>
+<p>假如我们刚刚那个分支不想要了，想删除掉它，执行 <code class="notranslate">git branch -d</code> 命令：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git branch -d feature/oauth
+error: The branch <span class="pl-s"><span class="pl-pds">'</span>feature/oauth<span class="pl-pds">'</span></span> is not fully merged.
+If you are sure you want to delete it, run <span class="pl-s"><span class="pl-pds">'</span>git branch -D feature/oauth<span class="pl-pds">'</span></span>.</pre></div>
+<p>此时发现删除失败了，原因是该分支还没有合并到我们的主干分支 <code class="notranslate">main</code> ，如果你此时删除的话该分支上的所有提交都会丢失，GitHub 对此进行了提示。</p>
+<p>所有此时要么把 <code class="notranslate">feature/oauth</code> 分支先合并到 <code class="notranslate">main</code> ，要么执行 <code class="notranslate">git branch -D</code>  强制删除：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git branch -D feature/oauth
+Deleted branch feature/oauth (was 3643f28).</pre></div>
+<p>这样就删除成功了。</p>
+<blockquote>
+<p>**tips：**不能直接删除当前所在分支，需要切换到其它分支后才可以删除。</p>
+</blockquote>
+<h3>提交合并请求 -- pull request</h3>
+<p>我们在自己的分支上开发完成了，最终要合并到主干分支，方便统一维护。执行 <code class="notranslate">git merge [仓库地址（可不填）]:[分支名称（可不填）]</code> 可以把当前分支合并到指定分支。</p>
+<p><em>我们可以先在自己的本地仓库把 <code class="notranslate">hotfix/authors</code>  分支合到本地仓库的 <code class="notranslate">main</code> 分支，然后推送到远程仓库。但是这样做并不规范，一般情况我们写完代码提交后，一般要让同组的其他伙伴进行 <code class="notranslate">Code Review</code> （重新检查一遍代码）之后，确定没问题了才能合到主干分支，避免污染主干分支。</em></p>
+<p>首先，我们要把自己的个人分支 hotfix/authors 推送到远程仓库：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git push origin hotfix/authors
+Enumerating objects: 8, done.
+To github.com:chatplayers/gaoshiqing.git
+ <span class="pl-k">*</span> [new branch]      HEAD -<span class="pl-k">&gt;</span> feature/oauth</pre></div>
+<p>推送成功后我们打开 GitHub 远程仓库，创建一个 <code class="notranslate">Pull Request</code> 提交合并请求 ：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230415150225143.png"><img src="images/image-20230415150225143.png" alt="" style="max-width: 100%;"></a></p>
+<p><code class="notranslate">Pull Request</code> 简称 <code class="notranslate">PR</code>，可以通俗理解为合并请求，创建是指定哪些人可以通过这个请求并合并代码，我们一般称这个过程为 Code Review：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/image-20230415150853398.png"><img src="images/image-20230415150853398.png" alt="" style="max-width: 100%;"></a></p>
+<p>提交后，在 <code class="notranslate">Code Review</code> 人员列表内的伙伴查看完你的代码，认为没有问题了，就可以通过后把代码合入主干分支。</p>
+<blockquote>
+<p>**重点：**我们提交 <code class="notranslate">Pull Request</code> 合入到 <code class="notranslate">master</code> 的过程，相当于在远程仓库执行了 <code class="notranslate">git merge master</code> 命令，只是中间通过 <code class="notranslate">Pull Request</code> 的交互绕了一道，便于 <code class="notranslate">Code Review</code> 。</p>
+</blockquote>
+<h2>分支合并</h2>
+<h3>合并算法</h3>
+<p>上面的 <code class="notranslate">pull request</code> 背后其实是执行了 <code class="notranslate">git merge</code> 命令，在执行 <code class="notranslate">git merge</code> 时两个分支结构不同对应的合并算法也不同，共有三种合并算法：</p>
+<ul>
+<li>Fast-Forward</li>
+<li>Three-Way</li>
+<li>Squash</li>
+</ul>
+<h4>算法一：Fast-Forward</h4>
+<p>如果合并的两个分没有分叉，例如我们将一个 bug 修复的分支合 <code class="notranslate">hotfix/author</code> 并到 <code class="notranslate">main</code> 分支。流程图示如下：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/git-origin-branch-1.png"><img src="images/git-origin-branch-1.png" alt="" style="max-width: 100%;"></a></p>
+<p>我们也可以通过 <code class="notranslate">git log --oneline --graph --decorate --all</code> 命令查看提交历史：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">*</span> 2a8def6 (HEAD -<span class="pl-k">&gt;</span> main) c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>这时候如果我们执行 <code class="notranslate">git merge</code> 把 <code class="notranslate">hotfix/authors</code>  分支合入 <code class="notranslate">main</code> 分支：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git merge hotfix/authors
+Updating 2a8def6..f6b44a1
+Fast-forward
+ 2 files changed, 2 insertions(+)
+ create mode 100644 authors/relation.java</pre></div>
+<p>可以看到合并算法默认选择 <code class="notranslate">Fast-Forward</code> ，最终效果：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> f6b44a1 (HEAD -<span class="pl-k">&gt;</span> main, hotfix/authors) c4
+<span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>其实就是直接把 <code class="notranslate">main head</code> 指针移动到最近一次提交 <code class="notranslate">hotfix/authors head</code> 处。可以用流程图描述为：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/git-merge-fast.png"><img src="images/git-merge-fast.png" alt="" style="max-width: 100%;"></a></p>
+<p>可以看到 <code class="notranslate">Fast-Forword</code> 算法的优点是分支很干净，就是一条直线；缺点是我们看不出分支是从哪个节点合入的。我们可以使用 <code class="notranslate">git merge --no-ff</code> 明确不使用 <code class="notranslate">Fast-Forword</code> 方法。</p>
+<blockquote>
+<p><strong>git reset</strong></p>
+<p>git reset 回退主要有 3 种用法：</p>
+<ul>
+<li>git reset &lt;文件路径&gt; 将指定文件从暂存区移除，文件状态会改为待提交</li>
+<li>git reset --soft &lt;提交节点&gt; 将当前分支的 HEAD 回退到指定节点，被回退节点上修改的文件状态变为待提交；</li>
+<li>git reset --har &lt;提交节点&gt; 将当前分支的 HEAD 回退到指定节点，被回退节点上修改的文件会丢失。</li>
+</ul>
+</blockquote>
+<p>我们先把代码使用 <code class="notranslate">git reset --hard</code> 回退到合并前 c2 ：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git reset --hard 2a8def6
+HEAD is now at 2a8def6 c2
+$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">*</span> 2a8def6 (HEAD -<span class="pl-k">&gt;</span> main) c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>然后不使用  <code class="notranslate">Fast-Forword</code>  算法重新合并：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git merge --no-ff -m c5 hotfix/authors
+Merge made by the <span class="pl-s"><span class="pl-pds">'</span>ort<span class="pl-pds">'</span></span> strategy.
+ 2 files changed, 2 insertions(+)
+ create mode 100644 authors/relation.java</pre></div>
+<blockquote>
+<p><strong><code class="notranslate">ort</code> 策略</strong></p>
+<p>可以看到采用了<code class="notranslate">ort</code> 策略，这是 Git 2.33 版本新引入的一种合并策略，用于优化 <code class="notranslate">Three-Way</code> 算法。Git 支持了很多种策略，关于策略的话题，我们后面详细解释，这里大家只要知道采用了 <code class="notranslate">ort</code> 策略说明合并必然使用的是 <code class="notranslate">Three-Way</code> 算法。</p>
+</blockquote>
+<p>我们查看一下提交日志：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span>   34650c4 (HEAD -<span class="pl-k">&gt;</span> main) c5
+<span class="pl-k">|</span>\
+<span class="pl-k">|</span> <span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">|</span> <span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>可以看到 <code class="notranslate">Three-Way</code> 合并算法新生成了一个合并节点 c5 。</p>
+<h4>算法二：Three-Way</h4>
+<p>接上文，其实 <code class="notranslate">Three-Way</code> 算法最常见的是两个合并的分支发生分叉时。我们再把 <code class="notranslate">HEAD</code> 回退到 c2 节点，然后在 <code class="notranslate">main</code> 分支继续提交 2 个节点 c5 和 c6，提交日志会变为：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git reset --hard 2a8def6
+// 在 main 分支新增两个提交 c5 c6，此处操作省略
+$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> 72286b0 (HEAD -<span class="pl-k">&gt;</span> main) c6
+<span class="pl-k">*</span> dbd2ec2 c5
+<span class="pl-k">|</span> <span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">|</span> <span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>流程图示可以更形象的描述为：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/git-origin-branch-2.png"><img src="images/git-origin-branch-2.png" alt="" style="max-width: 100%;"></a></p>
+<p>我们也可以在 <code class="notranslate">GitHub</code> 网页上查看 <code class="notranslate">Network graph</code> ：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="/Users/imangozhang/Library/Application Support/typora-user-images/image-20230419150704328.png"><img src="/Users/imangozhang/Library/Application Support/typora-user-images/image-20230419150704328.png" alt="image-20230419150704328" style="max-width: 100%;"></a></p>
+<p>此时 <code class="notranslate">git merge</code> 会采用 <code class="notranslate">Three-Way</code> 算法进行合并，会新生成一个合并节点：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git merge hotfix/authors
+Merge made by the <span class="pl-s"><span class="pl-pds">'</span>ort<span class="pl-pds">'</span></span> strategy.
+$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span>   f42c98c (HEAD -<span class="pl-k">&gt;</span> main) c7
+<span class="pl-k">|</span>\
+<span class="pl-k">|</span> <span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">|</span> <span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">*</span> <span class="pl-k">|</span> 72286b0 c6
+<span class="pl-k">*</span> <span class="pl-k">|</span> dbd2ec2 c5
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>用流程图表示为：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/git-origin-merge.png"><img src="images/git-origin-merge.png" alt="" style="max-width: 100%;"></a></p>
+<p>为什么命名为 <code class="notranslate">Three-Way</code> 呢？</p>
+<p>假如两个分支同时对一个文件做了修改，那么工具在帮我们做合并时，只知道两个文件在同一行上有差异，却没办法知道在合并后的版本里，到底该保留谁的版本，所以只能交给用户自己手工来决定。这就是普通的 Merge 工具所能做的。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/three-way.png"><img src="images/three-way.png" alt="" style="max-width: 100%;"></a></p>
+<p>和普通的 Merge 工具相比，Git 最大的不同在于它记录了文件的提交历史，因此可以向前回溯文件修改前的“原件”。它在合并时不仅会看两人各自的文件内容，还会看之前的原件。通过和原来版本的对比，就可以清楚地知道，第一行应该保留<strong>子节点1</strong>的版本，因为<strong>子节点2</strong>的版本和原件相比并没有变化。这一过程可以由工具自动完成，而不用像 <code class="notranslate">Two-Way</code> Merge 那样，需要交给用户手工来决定，这就是 <code class="notranslate">Three-Way</code> Merge。</p>
+<p><code class="notranslate">Three-Way</code> 合并算法的优点是可以通过提交日志直观看出各分支合并情况，但是当我们的分支很多的时候，提交历史就会变的很臃肿很乱。想要解决这一问题就可以采用下面的 <strong><code class="notranslate">Squash</code></strong> 算法或者<strong>基变</strong>。</p>
+<h4>算法三：Squash</h4>
+<p>所谓Squash Merge，是指Git在做两个分支间的合并时，会把被合并分支（通常被称为topic分支）上的所有变更“压缩（squash）”成一个提交，追加到当前分支的后面，作为“合并提交”（merge commit）。</p>
+<blockquote>
+<p>从参与合并的文件变更上来说，<code class="notranslate">Squash</code> Merge 和普通 Merge 并没有任何区别，效果完全一样。唯一的区别体现在提交历史上：正如我们前面提到的，对于普通的Merge而言，在当前分支上的合并提交通常会有两个 parent；而 Squash Merge 却只有一个。</p>
+</blockquote>
+<p>我们首先在 main 分支执行 git reset 回退到 c5：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git reset --hard dbd2ec2
+$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> dbd2ec2 (HEAD -<span class="pl-k">&gt;</span> main) c5
+<span class="pl-k">|</span> <span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">|</span> <span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>现在，让我们执行一次Squash Merge，把 hofix/authors 分支的内容合并到 main 分支：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git merge --squash hotfix/authors
+$ git log --oneline --graph --decorate --all</pre></div>
+<p>然后创建新的提交：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git status
+On branch main
+Your branch is ahead of <span class="pl-s"><span class="pl-pds">'</span>origin/main<span class="pl-pds">'</span></span> by 3 commits.
+  (use <span class="pl-s"><span class="pl-pds">"</span>git push<span class="pl-pds">"</span></span> to publish your <span class="pl-k">local</span> commits)
+
+Changes to be committed:
+  (use <span class="pl-s"><span class="pl-pds">"</span>git restore --staged &lt;file&gt;...<span class="pl-pds">"</span></span> to unstage)
+	modified:   authors/authors.java
+	new file:   authors/relation.java
+$ git commit -m <span class="pl-s"><span class="pl-pds">"</span>c6<span class="pl-pds">"</span></span></pre></div>
+<p>现在的提交历史是这样的：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> a2c47e2 (HEAD -<span class="pl-k">&gt;</span> main) c6
+<span class="pl-k">*</span> dbd2ec2 c5
+<span class="pl-k">|</span> <span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">|</span> <span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p><code class="notranslate">Squash</code> Merge不会像普通 Merge 那样在合并后的提交历史里保留被合并分支的分叉，被合并分支上的提交记录也不会出现在合并后的提交历史里，所有被合并分支上的变更都被“压缩”成了一个合并提交。</p>
+<p>如果在被合并分支上，完整的提交历史里包含了很多中间提交（<code class="notranslate">intermediate commit</code>），比如：改正一个小小的拼写错误可能也会成为一个独立的提交，而我们并不希望在合并时把这些细节都反应在当前分支的提交历史里。这时，我们就可以选择 Squash Merge。</p>
+<p>在执行完 <code class="notranslate">git merge --squash</code> 之后，所有提交都被合并到 <code class="notranslate">main</code> 分支，此时 <code class="notranslate">hotfix</code> 分支就可以直接删除了，这样提交记录就是一条执行，非常干净。</p>
+<h3>合并策略</h3>
+<p>默认情况下，Git在合并分支时会自动选择最合适的 Merge 策略，我们也可以通过参数<code class="notranslate">-s</code>显式指定策略。不同的策略会对合并的方式与结果产生不同的影响，比如：对参与合并的分支，其“共同祖先（<code class="notranslate">common ncestor</code>）”的选择，以及在合并过程中发生冲突时的处理方式等。</p>
+<h4>策略一：Recursive</h4>
+<p><code class="notranslate">Recursive</code> 策略只适用于两个分支之间的合并。因此，对于超过两个分支的合并，需要反复地进行两两合并，才能最终完成所有分支的合并（这也是Recursive名字的由来）。本质上，<code class="notranslate">Recursive</code> 就是一种<code class="notranslate">Three-Way</code> Merge。</p>
+<p><strong>它的特点在于，如果Git在寻找共同祖先时，在参与合并的两个分支上找到了不只一个满足条件的共同祖先，它会先对共同祖先进行合并，建立临时快照。然后，把临时产生的“虚拟祖先”作为合并依据，再对分支进行合并。</strong></p>
+<p>如下图所示，在对两个分支上的提交A和B进行合并时，我们发现了它们有两个共同祖先，分别是：ancestor0和ancestor1。这个时候，Recursive策略会对ancestor0和ancestor1进行合并，临时创建一个虚拟祖先：ancestor2。用ancestor2与A，B一起进行Three-Way Merge。</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/recursive.png"><img src="images/recursive.png" alt="" style="max-width: 100%;"></a></p>
+<blockquote>
+<p><strong>Criss-Cross 现象：</strong></p>
+</blockquote>
+<p>出现多个满足条件的共同祖先的现象被称为 <code class="notranslate">Criss-Cross</code> 现象，对于那些存在时间很长，拓扑结构很复杂的分支经常出现这种现象。</p>
+<ul>
+<li>Ours/Theirs 参数</li>
+</ul>
+<p>在处理合并时，和其他某些 Merge 策略一样，Recursive 策略通常会尽量自动完成合并。如果在合并过程中发现冲突，Git会在被合并的文件里插入冲突标记（merge conflict markers），并标记当前文件存在冲突，然后交由人工来处理。</p>
+<p>不过，我们也可以通过指定参数告诉 Git，当发生冲突时自动选择或丢弃其中一个分支上的修改。比如，假设我们要把分支 B 合并到分支 A 。如果指定参数<code class="notranslate">-Xours</code>，则表明丢弃分支 B 上的修改，保留当前分支A上的内容；指定参数<code class="notranslate">-Xtheirs</code>则刚好相反。</p>
+<p>这里要注意的是，这两个参数只在发生冲突时起作用。而正常情况下，即没有发生冲突时，Git还是会帮我们自动完成合并的。关于这一点，在后面谈到Ours策略时可以做一个对比，两者在概念上比较容易混淆。</p>
+<h3>策略二：Resolve</h3>
+<p>和 <code class="notranslate">Recursive</code> 策略类似，<code class="notranslate">Resolve</code> 策略是另一种解决两个分支间合并问题的策略，同样也是采用的 <code class="notranslate">Three-Way</code> Merge 算法，是在 Recursive 策略出现之前，Git 合并时所采用的默认策略。**和 Recursive 策略不同的是，它在处理 Criss-Cross 情况时，会在多个满足条件的共同祖先里选取其中一个作为合并的基础（称为 Merge Base ）。**在某些情况下，如果使用 Recursive 策略作为默认策略进行合并时遇到了问题，也可以尝试选择 Resolve 策略。</p>
+<h3>策略三：Ours</h3>
+<p>前面提到了，如果在使用 <code class="notranslate">Recursive</code> 策略时指定<code class="notranslate">-Xours</code>参数，那么当发生冲突时，Git会选择丢弃来自被合并分支的修改，而保留被当前分支上的原有修改。这种情况只在有冲突时才会发生，如果没有冲突，Git还是会帮我们自动完成合并的。</p>
+<p>与之不同的是，<code class="notranslate">Ours</code> 策略无论有没有冲突发生，都会毫不犹豫的丢弃来自被合并分支的修改，完整保留当前分支上的修改。所以，对于 <code class="notranslate">Ours</code> 策略而言，实质上根本就没有做任何真正意义上的合并，或者说做的是假合并（<code class="notranslate">fake merge</code>）。不过，从提交历史上看，Git依然会创建一个新的合并提交（<code class="notranslate">merge commit</code>），并让它的 <code class="notranslate">parent</code> 分别指向参与合并的两个分支上的提交记录。</p>
+<h4>策略四：Ort</h4>
+<p><a href="https://git-scm.com/docs/merge-strategies" rel="nofollow"><code class="notranslate">Ort</code> 策略</a> 才是 Git 合并策略中的主角，因为这是自 Git 2.33 版本之后采用的默认合并策略。 <code class="notranslate">Ort</code> 策略同样也是采用的 <code class="notranslate">Three-Way</code> Merge 算法，该策略和 <code class="notranslate">Recursive</code> 策略基本类似，相比之下有两个优势：</p>
+<ol>
+<li>合并速度更快，原来复杂和合并如果使用 <code class="notranslate">Recursive</code> 策略耗时 5s 以上，但是采用<code class="notranslate">Ort</code> 策略只需要不到 200ms；</li>
+<li>修复了 <code class="notranslate">Recursive</code> 策略中的一些细节错误。</li>
+</ol>
+<h2>基变</h2>
+<p>我们在上面讲到 <code class="notranslate">Three-Way</code> 合并算法时提到，当两个分支出现分叉后使用 merge 合并又会产生一个新的提交节点。其实，还有一种方法：你可以提取在 <code class="notranslate">c7</code> 中引入的补丁和修改，然后在 <code class="notranslate">c4</code> 的基础上应用一次。 在 Git 中，这种操作就叫做 <strong>变基（rebase）</strong>。 你可以使用 <code class="notranslate">rebase</code> 命令将提交到某一分支上的所有修改都移至另一分支上，就好像“重新播放”一样。</p>
+<p>我们还是在 main 分支执行 git reset 回退到 c5：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git reset --hard dbd2ec2
+$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> dbd2ec2 (HEAD -<span class="pl-k">&gt;</span> main) c5
+<span class="pl-k">|</span> <span class="pl-k">*</span> f6b44a1 (hotfix/authors) c4
+<span class="pl-k">|</span> <span class="pl-k">*</span> 8121a15 c3
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 (origin/main, origin/HEAD) Initial commit</pre></div>
+<p>然后执行 <code class="notranslate">git rebase</code> ：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git rebase main
+$ git log --oneline --graph --decorate --all
+<span class="pl-k">*</span> 34dbfc6 (hotfix/authors) c4
+<span class="pl-k">*</span> 9ec24bf c3
+<span class="pl-k">*</span> dbd2ec2 (HEAD -<span class="pl-k">&gt;</span> main) c5
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 Initial commit</pre></div>
+<p>可用看到，通过 <code class="notranslate">rebase</code> 合并后，并没有生成新的提交，而是把 <code class="notranslate">c3</code> 和 <code class="notranslate">c4</code> 两个提交直接拼接到了 <code class="notranslate">c5</code> 之后。它的原理是首先找到这两个分支（即当前分支 <code class="notranslate">experiment</code>、变基操作的目标基底分支 <code class="notranslate">master</code>） 的最近共同祖先 <code class="notranslate">c2</code>，然后对比当前分支相对于该祖先的历次提交，提取相应的修改并存为临时文件， 然后将当前分支指向目标基底 <code class="notranslate">c5</code>, 最后以此将之前另存为临时文件的修改依序应用。 可用用流程图描述为：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/rebase.png"><img src="images/rebase.png" alt="" style="max-width: 100%;"></a></p>
+<p>这个图是不是有些熟悉？是不是和执行 <code class="notranslate">Fast-Forward</code> 之前的流程图一样？！所以接下来我们进行一下 <code class="notranslate">Fast-Forward</code> 合并，<code class="notranslate">HEAD</code> 和 <code class="notranslate">main head</code> 指针是不是就移动到 <code class="notranslate">c4</code> 了？</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git merge hotfix/authors
+Updating dbd2ec2..34dbfc6
+Fast-forward
+$ git log --oneline --graph --decorate --all 
+<span class="pl-k">*</span> 34dbfc6 (HEAD -<span class="pl-k">&gt;</span> main, hotfix/authors) c4
+<span class="pl-k">*</span> 9ec24bf c3
+<span class="pl-k">*</span> dbd2ec2 c5
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 Initial commit</pre></div>
+<p>结果必然是这样！</p>
+<h2>提交拷贝</h2>
+<p>我把 <code class="notranslate">git cherry-pick</code> 命令描述为“提交拷贝”，因为我觉得它的功能就是把某个分支的一个（或多个）提交拷贝到当前分支。例如我们的提交记录如下：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git log --oneline --graph --all
+<span class="pl-k">*</span> c025b9d (HEAD -<span class="pl-k">&gt;</span> main) c7
+<span class="pl-k">|</span> <span class="pl-k">*</span> 6bd8367 (feature/books) c6
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 34dbfc6 (origin/main, origin/HEAD) c4
+<span class="pl-k">*</span> 9ec24bf c3
+<span class="pl-k">*</span> dbd2ec2 c5
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 Initial commit</pre></div>
+<p>我们想把 <code class="notranslate">feature/books</code> 上的提交 <code class="notranslate">c6</code> 复制到 <code class="notranslate">main</code>分支：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git cherry-pick 6bd8367
+$ git log --oneline --graph --all
+<span class="pl-k">*</span> a46965b (HEAD -<span class="pl-k">&gt;</span> main) c6
+<span class="pl-k">*</span> c025b9d c7
+<span class="pl-k">|</span> <span class="pl-k">*</span> 6bd8367 (feature/books) c6
+<span class="pl-k">|</span>/
+<span class="pl-k">*</span> 34dbfc6 (origin/main, origin/HEAD) c4
+<span class="pl-k">*</span> 9ec24bf c3
+<span class="pl-k">*</span> dbd2ec2 c5
+<span class="pl-k">*</span> 2a8def6 c2
+<span class="pl-k">*</span> 3c47a32 c1
+<span class="pl-k">*</span> fbe2f09 Initial commit</pre></div>
+<p>可以看到 <code class="notranslate">c6</code> 提交被拷贝到了 <code class="notranslate">main</code> 分支上。加入执行 <code class="notranslate">git cherry-pick</code> 过程中发生了冲突，需要手动解决冲突，然后 <code class="notranslate">git cherry-pick --continue</code> 继续合并即可。</p>
+<p><code class="notranslate">git cherry-pick</code> 非常适用于我们有些分支已经严重落后于主干分支或开发分支了，但是这个又是一个为某个客户服务的固定版本，此时这个分支上发现了一个 bug，这个 bug 在主干上同样存在。此时我们就可以把 bug fix 的节点提交到主干验证没有问题后，将该修复通过 <code class="notranslate">cherry-pick</code> 拷贝到落后分支上。</p>
+<h1>4.业界规范</h1>
+<p>业界对分支的管理、代码的提交和合并，都有一套规范，主要有三个目的：</p>
+<ul>
+<li>
+<p>更简洁、更统一的做好好源码管理</p>
+</li>
+<li>
+<p>保证提交历史清晰可读</p>
+</li>
+<li>
+<p>更有效的保证产品质量</p>
+</li>
+</ul>
+<p>下面汇总了各互联网行业主要大厂的一些常用规范，主要适用（但不限于）：</p>
+<ul>
+<li>架构师</li>
+<li>开发工程师</li>
+<li>测试工程师</li>
+<li>……</li>
+</ul>
+<h2>分支管理规范</h2>
+<h3>分支分类</h3>
+<p>我们源码仓库的分支可以按照<strong>生命周期</strong>和<strong>用途</strong>来划分，不同类型的分支命名规范如下：</p>
+<p><a target="_blank" rel="noopener noreferrer" href="images/%E5%88%86%E6%94%AF%E5%88%86%E7%B1%BB.png"><img src="images/%E5%88%86%E6%94%AF%E5%88%86%E7%B1%BB.png" alt="" style="max-width: 100%;"></a></p>
+<h3>分支用途</h3>
+<p><a target="_blank" rel="noopener noreferrer" href="images/features.png"><img src="images/features.png" alt="" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>master（发布分支）</strong>
+<ul>
+<li>与生产环境保持一致</li>
+<li>发现生产环境问题必须以 master 为基准创建 <code class="notranslate">hotfix/*</code> 分支修复</li>
+</ul>
+</li>
+<li><strong>develop（开发分支）</strong>
+<ul>
+<li>所有新功能都在此分支开发</li>
+<li>所有分支中功能最全、代码最新的一个分支</li>
+</ul>
+</li>
+<li><strong>feature/*（新功能开发分支）</strong>
+<ul>
+<li>命名规则：feature/[功能名称]</li>
+<li>只能从 develop 创建</li>
+<li>开发测试后重新合并到 develop 分支</li>
+</ul>
+</li>
+<li><strong>release/*（预发布分支）</strong>
+<ul>
+<li>命名规则：release/v + [版本号]</li>
+<li>只能从 develop 创建</li>
+<li>同一时间点只能存在一个预发布分支</li>
+<li>上一个版本发布成功后必须删除</li>
+</ul>
+</li>
+<li><strong>hotfix/*（热修复分支）</strong>
+<ul>
+<li>命名规则：hotfix/v + [bug 修复版本号]</li>
+<li>只能从 master 创建，仅用于生产环境发现的 bug</li>
+<li>修复最终要合并到 develop 及 master，并删除该分支</li>
+</ul>
+</li>
+</ul>
+<h3>分支保护</h3>
+<p>根据项目管理级别分为两类保护策略:</p>
+<ul>
+<li><strong>通用策略</strong>： <strong>master</strong> <strong>分支</strong> 由管理角 色 Master 负责管理， 其他人员无权限修改；</li>
+<li><strong>严控策略</strong> ：<strong>master</strong> <strong>和</strong> <strong>develop</strong> <strong>分支</strong> 均由管理角色 Master 负责管理， 其他人员无权限修改</li>
+</ul>
+<h2>最佳实践</h2>
+<h3>功能开发</h3>
+<ul>
+<li><strong>标准流程</strong></li>
+</ul>
+<p>开发新功能都应遵循以下流程:</p>
+<ol>
+<li>拉取最新的 develop 分支，然后以最新的 develop 为基准创建新的 feature 分支</li>
+<li>在各 feature 分支上进行开发、测试...</li>
+<li>合并 feature 至 develop，并删除 feature</li>
+</ol>
+<div class="highlight highlight-source-shell"><pre class="notranslate">$ git pull origin develop
+$ git checkout -b feature/f1 develop
+$ git checkout develop
+$ git merge --no-ff feature/f1
+$ git branch -d feature/f1</pre></div>
+<p><a target="_blank" rel="noopener noreferrer" href="images/feature-standard.png"><img src="images/feature-standard.png" alt="标准开发流程" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>最佳实践</strong></li>
+</ul>
+<ol>
+<li>每一个 feature/* 应与 TAPD 上的 feature 有明确的对应关系(与 issue 对应更佳)</li>
+<li>使用 <strong>git flow</strong> 可以更简单的完成分支管理:</li>
+</ol>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 1. 初始化 git flow </span>
+$ git flow init
+
+<span class="pl-c"><span class="pl-c">#</span> 2. 以 develop 为基准创建 feature/f1 </span>
+$ git flow feature start f1
+
+<span class="pl-c"><span class="pl-c">#</span> 3. feature/f1 开发和测试完毕，合并 develop，并删除分支 feature/f1 </span>
+$ git flow feature finish f1</pre></div>
+<h3>发布与预发布</h3>
+<ul>
+<li><strong>标准流程</strong></li>
+</ul>
+<p>提交到预发布和生产环境应遵循以下流程:</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 1. 从 develop 分支创建新的预发布分支 release # 并部署到预发布环境上测试</span>
+$ git checkout -b release/v0.1.0 develop
+
+<span class="pl-c"><span class="pl-c">#</span> 2. 预发布分支完全测试通过后</span>
+<span class="pl-c"><span class="pl-c">#</span> 2.1 合并回 develop 与 master</span>
+$ git checkout develop
+$ git merge --no-ff release/v0.1.0
+$ git checkout master
+$ git merge --no-ff release/v0.1.0 
+<span class="pl-c"><span class="pl-c">#</span> 2.2 打上正式版本的 tag</span>
+$ git tag v0.1.0
+<span class="pl-c"><span class="pl-c">#</span> 2.3 删除预发布分支 release/v0.1.0 </span>
+$ git branch -d release/v0.1.0</pre></div>
+<p><a target="_blank" rel="noopener noreferrer" href="images/deploy-standard.png"><img src="images/deploy-standard.png" alt="部署流程规范" style="max-width: 100%;"></a></p>
+<ul>
+<li><strong>Bug 热修复流程</strong></li>
+</ul>
+<p>生产环境发现 Bug，需要 Hotfix 时应遵循以下流程:</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 1. 分离热修复分支，在分支上进行修复</span>
+$ git checkout -b hotfix/v0.1.1 master
+<span class="pl-c"><span class="pl-c">#</span> 2. 分支验证通过后，重新合并回 develop 和 master </span>
+$ git checkout develop
+$ git merge --no-ff hotfix/v0.1.1
+$ git checkout master
+$ git merge --no-ff hotfix/v0.1.1
+<span class="pl-c"><span class="pl-c">#</span> 3. 在 master 上打一个热修复 tag</span>
+$ git tag v0.1.1
+<span class="pl-c"><span class="pl-c">#</span> 4. 删除 hotfix/v0.1.1</span>
+$ git branch -d hotfix/v0.1.1</pre></div>
+<ul>
+<li><strong>最佳实践</strong></li>
+</ul>
+<p>使用 git flow 进行 预发布和发布管理:</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 1. 开始新功能 f1 的预发布验证，版本定为 0.1.0</span>
+$ git flow release start v0.1.0
+<span class="pl-c"><span class="pl-c">#</span> 2. 新功能 f1 预发布验证通过</span>
+<span class="pl-c"><span class="pl-c">#</span> 合并到 master，打 tag，合并到 develop，删除 relase 分支</span>
+$ git flow release finish v0.1.0</pre></div>
+<p>使用 git flow 进行 Hotfix 管理:</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-c"><span class="pl-c">#</span> 1. 开始在线 v0.1.0 的 bug 的修复，以 master 为基准创建 hotfix/v.0.1.1 </span>
+$ git flow release start v0.1.1
+<span class="pl-c"><span class="pl-c">#</span> 2. bug 修复完成</span>
+<span class="pl-c"><span class="pl-c">#</span> 合并到 master，打 tag，合并到 develop，删除 hotfix 分支</span>
+$ git flow hotfix finish v0.1.1</pre></div>
+<h2>提交与合并规范</h2>
+<h3>代码提交规范</h3>
+<ul>
+<li>git commit 结构</li>
+</ul>
+<p>目前规范使用较多的是 <a href="https://link.juejin.cn/?target=https%3A%2F%2Flink.zhihu.com%2F%3Ftarget%3Dhttps%3A%2F%2Fgithub.com%2Fangular%2Fangular.js%2Fblob%2Fmaster%2FDEVELOPERS.md%23-git-commit-guidelines" rel="nofollow">Angular 团队的规范</a>, 继而衍生了 <a href="https://link.juejin.cn/?target=https%3A%2F%2Flink.zhihu.com%2F%3Ftarget%3Dhttps%3A%2F%2Fconventionalcommits.org%2F" rel="nofollow">Conventional Commits specification</a>，继而衍生出很多 git 提交的工具，其中有一款非常好用的推荐给大家：<a href="https://www.npmjs.com/package/cz-git" rel="nofollow">git-cz</a>，按照教程安装和使用，可以规范回你的提交内容。现在 git 提交规范基本一致：</p>
+<div class="highlight highlight-source-shell"><pre class="notranslate"><span class="pl-k">&lt;</span>type<span class="pl-s"><span class="pl-pds">&gt;(</span><span class="pl-k">&lt;</span>scope<span class="pl-k">&gt;</span><span class="pl-pds">)</span></span>: <span class="pl-k">&lt;</span>subject<span class="pl-k">&gt;</span>
+<span class="pl-k">&lt;</span>BLANK LINE<span class="pl-k">&gt;</span>
+<span class="pl-k">&lt;</span>body<span class="pl-k">&gt;</span>
+<span class="pl-k">&lt;</span>BLANK LINE<span class="pl-k">&gt;</span>
+<span class="pl-k">&lt;</span>footer<span class="pl-k">&gt;</span></pre></div>
+<ol>
+<li>type type为必填项，用于指定commit的类型，约定了feat、fix两个主要type，以及docs、style、build、refactor、revert五个特殊type，其余type暂不使用。</li>
+</ol>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>主题</th>
+<th>用途</th>
+<th>主题</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>feat</td>
+<td>新功能</td>
+<td>style</td>
+<td>格式</td>
+</tr>
+<tr>
+<td>test</td>
+<td>增加测试</td>
+<td>chore</td>
+<td>构建过程或辅助工具的变动</td>
+</tr>
+<tr>
+<td>fix</td>
+<td>修补 bug</td>
+<td>refactor</td>
+<td>重构</td>
+</tr>
+<tr>
+<td>build</td>
+<td>编译相关的修改</td>
+<td>revert</td>
+<td>回滚上一次 commit</td>
+</tr>
+<tr>
+<td>docs</td>
+<td>文档</td>
+<td>perf</td>
+<td>性能优化</td>
+</tr>
+<tr>
+<td>ci</td>
+<td>CI 相关的修改</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p>当一次改动包括主要type与特殊 type 时，统一采用主要 type 。</p>
+<ol start="2">
+<li>scope scope也为必填项，用于描述改动的范围，格式为项目名/模块名，例如： node-pc/common rrd-h5/activity，而we-sdk不需指定模块名。如果一次commit修改多个模块，建议拆分成多次commit，以便更好追踪和维护。</li>
+<li>body body填写详细描述，主要描述改动之前的情况及修改动机，对于小的修改不作要求，但是重大需求、更新等必须添加body来作说明。</li>
+<li>break changes break changes 指明是否产生了破坏性修改，涉及break changes的改动必须指明该项，类似版本升级、接口参数减少、接口删除、迁移等。</li>
+<li>affect issues affect issues 指明是否影响了某个问题。例如我们使用jira时，我们在 commit message 中可以填写其影响的 JIRA_ID，若要开启该功能需要先打通jira与gitlab</li>
+</ol>
+<p>每次提交建议添加关键词前缀，用于指示本次改动的主题。</p>
+<h3>代码合并规范</h3>
+<p><code class="notranslate">Merge Request(MR)</code>（或者 <code class="notranslate">Pull Request(PR)</code>）规范</p>
+<ul>
+<li>建议在提交时需在标题中添加 <strong>[MR]</strong> 前缀</li>
+<li>不要在一个 MR 中包含多个主题</li>
+<li>每个 MR 提交人必须指定一名 <code class="notranslate">Code Reviewer</code> 进行代码审查、合并</li>
+</ul>
+<h1>附：Git 命令汇总</h1>
+<markdown-accessiblity-table><table role="table">
+<thead>
+<tr>
+<th>命令</th>
+<th>详情</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>git clone &lt;远程仓库地址&gt;</td>
+<td>克隆项目到本地（Https/SSH/GitCLI）</td>
+</tr>
+<tr>
+<td>git init</td>
+<td>在目录中创建新的 Git 仓库</td>
+</tr>
+<tr>
+<td>git status</td>
+<td>查看文件状态</td>
+</tr>
+<tr>
+<td>git diff &lt;文件路径&gt;</td>
+<td>查看文件的变更内容</td>
+</tr>
+<tr>
+<td>git add &lt;文件路径&gt;</td>
+<td>添加文件到暂存区，文件路径支持正则匹配</td>
+</tr>
+<tr>
+<td>git commit -m &lt;提交说明&gt;</td>
+<td>提交暂存区文件到本地仓库</td>
+</tr>
+<tr>
+<td>git fetch [指令] [&lt;仓库地址&gt;] [&lt;分支&gt;]</td>
+<td>同步远程仓库内容：<br>默认：同步远程分支内容到本地<br>--all：同步远程仓库所有内容到本地</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>git pull [&lt;仓库地址&gt;] [&lt;分支&gt;]</td>
+<td>同步远程分支内容到本地，并与当前分支合并</td>
+</tr>
+<tr>
+<td>git push [&lt;仓库地址&gt;] [&lt;分支&gt;]</td>
+<td>推送本地仓库的当前分支到远程仓库</td>
+</tr>
+<tr>
+<td>git remote [指令] [&lt;远程仓库地址&gt;]</td>
+<td>管理远程仓库信息：<br>-v：查询远程仓库地址；<br>add：添加远程仓库地址<br>set-url：更新远程仓库地址<br>remove：删除远程仓库地址</td>
+</tr>
+<tr>
+<td>git log [指令]</td>
+<td>查看提交历史：<br>默认：查看本地仓库当前分支提交历史<br>--oneline --graph --decorate --all：查看所有分支提交历史</td>
+</tr>
+<tr>
+<td>git reset [指令] &lt;提交节点/文件路径&gt;</td>
+<td>撤销/回退：<br>默认 文件路径：撤销暂存区的某个文件<br>默认 HEAD^：本地提交回退到上一次提交的版本<br>--soft 提交节点：本地提交回退到指定提交版本<br>（撤回的文件状态都改为待提交状态）<br>--hard 提交节点：当前分支会退到某个历史提交节点<br>（撤回的文件直接丢弃，谨慎使用）</td>
+</tr>
+<tr>
+<td>git reblog</td>
+<td>查看本地仓库的所有操作日志，可用于恢复误操作导致的代码丢失</td>
+</tr>
+<tr>
+<td>git checkout [指令] [&lt;文件路径&gt;/&lt;分支名称&gt;]</td>
+<td>文件管理/分支管理：<br>直接加文件路径：撤销指定文件的修改<br>直接加分支名称：切换到指定分支<br>-b 分支名称：新建分支</td>
+</tr>
+<tr>
+<td>git branch [指令] [&lt;分支名称&gt;]</td>
+<td>分支管理：<br>-a：查看本地仓库的所有分支<br>-d 分支名称：删除本地仓库指定分支<br>-D 分支名称：强制删除本地仓库指定分支</td>
+</tr>
+<tr>
+<td>git rebase &lt;目标分支名称&gt;</td>
+<td>以基变的方式合并分支</td>
+</tr>
+<tr>
+<td>git merge &lt;被合并分支名称&gt;</td>
+<td>合并分支，可能</td>
+</tr>
+<tr>
+<td>git cherry-pick &lt;提交节点&gt;</td>
+<td>将指定的某个分支的一个（或多个）提交拷贝到当前分支</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table></div>
+<div style="font-size:small;margin-top:8px;float:right;"></div>
+
+<button class="btn btn-block" type="button" onclick="openComments()" id="cmButton">评论</button>
+<div class="comments" id="comments"></div>
+
+</div>
+    <div id="footer"><div id="footer1">Copyright © <span id="copyrightYear"></span> <a href="https://imangozhang.github.io">Blog Title</a></div>
+<div id="footer2">
+    <span id="runday"></span><span>Powered by <a href="https://meekdai.com/Gmeek.html" target="_blank">Gmeek</a></span>
+</div>
+
+<script>
+var now=new Date();
+document.getElementById("copyrightYear").innerHTML=now.getFullYear();
+
+if(""!=""){
+    var startSite=new Date("");
+    var diff=now.getTime()-startSite.getTime();
+    var diffDay=Math.floor(diff/(1000*60*60*24));
+    document.getElementById("runday").innerHTML="网站运行"+diffDay+"天"+" • ";
+}
+</script></div>
+</body>
+<script>
+var IconList={'sun': 'M8 10.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5zM8 12a4 4 0 100-8 4 4 0 000 8zM8 0a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0V.75A.75.75 0 018 0zm0 13a.75.75 0 01.75.75v1.5a.75.75 0 01-1.5 0v-1.5A.75.75 0 018 13zM2.343 2.343a.75.75 0 011.061 0l1.06 1.061a.75.75 0 01-1.06 1.06l-1.06-1.06a.75.75 0 010-1.06zm9.193 9.193a.75.75 0 011.06 0l1.061 1.06a.75.75 0 01-1.06 1.061l-1.061-1.06a.75.75 0 010-1.061zM16 8a.75.75 0 01-.75.75h-1.5a.75.75 0 010-1.5h1.5A.75.75 0 0116 8zM3 8a.75.75 0 01-.75.75H.75a.75.75 0 010-1.5h1.5A.75.75 0 013 8zm10.657-5.657a.75.75 0 010 1.061l-1.061 1.06a.75.75 0 11-1.06-1.06l1.06-1.06a.75.75 0 011.06 0zm-9.193 9.193a.75.75 0 010 1.06l-1.06 1.061a.75.75 0 11-1.061-1.06l1.06-1.061a.75.75 0 011.061 0z', 'moon': 'M9.598 1.591a.75.75 0 01.785-.175 7 7 0 11-8.967 8.967.75.75 0 01.961-.96 5.5 5.5 0 007.046-7.046.75.75 0 01.175-.786zm1.616 1.945a7 7 0 01-7.678 7.678 5.5 5.5 0 107.678-7.678z', 'sync': 'M1.705 8.005a.75.75 0 0 1 .834.656 5.5 5.5 0 0 0 9.592 2.97l-1.204-1.204a.25.25 0 0 1 .177-.427h3.646a.25.25 0 0 1 .25.25v3.646a.25.25 0 0 1-.427.177l-1.38-1.38A7.002 7.002 0 0 1 1.05 8.84a.75.75 0 0 1 .656-.834ZM8 2.5a5.487 5.487 0 0 0-4.131 1.869l1.204 1.204A.25.25 0 0 1 4.896 6H1.25A.25.25 0 0 1 1 5.75V2.104a.25.25 0 0 1 .427-.177l1.38 1.38A7.002 7.002 0 0 1 14.95 7.16a.75.75 0 0 1-1.49.178A5.5 5.5 0 0 0 8 2.5Z', 'home': 'M6.906.664a1.749 1.749 0 0 1 2.187 0l5.25 4.2c.415.332.657.835.657 1.367v7.019A1.75 1.75 0 0 1 13.25 15h-3.5a.75.75 0 0 1-.75-.75V9H7v5.25a.75.75 0 0 1-.75.75h-3.5A1.75 1.75 0 0 1 1 13.25V6.23c0-.531.242-1.034.657-1.366l5.25-4.2Zm1.25 1.171a.25.25 0 0 0-.312 0l-5.25 4.2a.25.25 0 0 0-.094.196v7.019c0 .138.112.25.25.25H5.5V8.25a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v5.25h2.75a.25.25 0 0 0 .25-.25V6.23a.25.25 0 0 0-.094-.195Z', 'github': 'M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z', 'copy': 'M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z', 'check': 'M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z'};
+var utterancesLoad=0;
+
+let themeSettings={
+    "dark": ["dark","moon","#00f0ff","dark-blue"],
+    "light": ["light","sun","#ff5000","github-light"],
+    "auto": ["auto","sync","","preferred-color-scheme"]
+};
+function changeTheme(mode, icon, color, utheme){
+    document.documentElement.setAttribute("data-color-mode",mode);
+    document.getElementById("themeSwitch").setAttribute("d",value=IconList[icon]);
+    document.getElementById("themeSwitch").parentNode.style.color=color;
+    if(utterancesLoad==1){utterancesTheme(utheme);}
+}
+function modeSwitch(){
+    let currentMode=document.documentElement.getAttribute('data-color-mode');
+    let newMode = currentMode === "light" ? "dark" : currentMode === "dark" ? "auto" : "light";
+    localStorage.setItem("meek_theme", newMode);
+    if(themeSettings[newMode]){
+        changeTheme(...themeSettings[newMode]);
+    }
+}
+function utterancesTheme(theme){
+    const message={type:'set-theme',theme: theme};
+    const iframe=document.getElementsByClassName('utterances-frame')[0];
+    iframe.contentWindow.postMessage(message,'https://utteranc.es');
+}
+if(themeSettings[theme]){changeTheme(...themeSettings[theme]);}
+console.log("\n %c Gmeek last https://github.com/Meekdai/Gmeek \n","padding:5px 0;background:#02d81d;color:#fff");
+</script>
+
+<script>
+document.getElementById("pathHome").setAttribute("d",IconList["home"]);
+document.getElementById("pathIssue").setAttribute("d",IconList["github"]);
+
+
+
+function openComments(){
+    cm=document.getElementById("comments");
+    cmButton=document.getElementById("cmButton");
+    cmButton.innerHTML="loading";
+    span=document.createElement("span");
+    span.setAttribute("class","AnimatedEllipsis");
+    cmButton.appendChild(span);
+
+    script=document.createElement("script");
+    script.setAttribute("src","https://utteranc.es/client.js");
+    script.setAttribute("repo","imangozhang/imangozhang.github.io");
+    script.setAttribute("issue-term","title");
+    
+    if(localStorage.getItem("meek_theme")=="dark"){script.setAttribute("theme","dark-blue");}
+    else if(localStorage.getItem("meek_theme")=="light") {script.setAttribute("theme","github-light");}
+    else{script.setAttribute("theme","preferred-color-scheme");}
+    
+    script.setAttribute("crossorigin","anonymous");
+    script.setAttribute("async","");
+    cm.appendChild(script);
+
+    int=self.setInterval("iFrameLoading()",200);
+}
+
+function iFrameLoading(){
+    var utterances=document.getElementsByClassName('utterances');
+    if(utterances.length==1){
+        if(utterances[0].style.height!=""){
+            utterancesLoad=1;
+            int=window.clearInterval(int);
+            document.getElementById("cmButton").style.display="none";
+            console.log("utterances Load OK");
+        }
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const createClipboardHTML = (codeContent, additionalClasses = '') => `
+        <pre class="notranslate"><code class="notranslate">${codeContent}</code></pre>
+        <div class="clipboard-container position-absolute right-0 top-0 ${additionalClasses}">
+            <clipboard-copy class="ClipboardButton btn m-2 p-0" role="button" style="display: inherit;">
+                <svg height="16" width="16" class="octicon octicon-copy m-2"><path d="${IconList["copy"]}"></path></svg>
+                <svg height="16" width="16" class="octicon octicon-check color-fg-success m-2 d-none"><path d="${IconList["check"]}"></path></svg>
+            </clipboard-copy>
+            <div class="copy-feedback">Copied!</div>
+        </div>
+    `;
+
+    const handleCodeElements = (selector = '') => {
+        document.querySelectorAll(selector).forEach(codeElement => {
+            const codeContent = codeElement.innerHTML;
+            const newStructure = document.createElement('div');
+            newStructure.className = 'snippet-clipboard-content position-relative overflow-auto';
+            newStructure.innerHTML = createClipboardHTML(codeContent);
+
+            const parentElement = codeElement.parentElement;
+            if (selector.includes('highlight')) {
+                parentElement.insertBefore(newStructure, codeElement.nextSibling);
+                parentElement.removeChild(codeElement);
+            } else {
+                parentElement.parentElement.replaceChild(newStructure, parentElement);
+            }
+        });
+    };
+
+    handleCodeElements('pre.notranslate > code.notranslate');
+    handleCodeElements('div.highlight > pre.notranslate');
+
+    let currentFeedback = null;
+    document.querySelectorAll('clipboard-copy').forEach(copyButton => {
+        copyButton.addEventListener('click', () => {
+            const codeContent = copyButton.closest('.snippet-clipboard-content').innerText;
+            const tempTextArea = document.createElement('textarea');
+            tempTextArea.value = codeContent;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempTextArea);
+
+            const copyIcon = copyButton.querySelector('.octicon-copy');
+            const checkIcon = copyButton.querySelector('.octicon-check');
+            const copyFeedback = copyButton.nextElementSibling;
+
+            if (currentFeedback && currentFeedback !== copyFeedback) {currentFeedback.style.display = 'none';}
+            currentFeedback = copyFeedback;
+
+            copyIcon.classList.add('d-none');
+            checkIcon.classList.remove('d-none');
+            copyFeedback.style.display = 'block';
+            copyButton.style.borderColor = 'var(--color-success-fg)';
+
+            setTimeout(() => {
+                copyIcon.classList.remove('d-none');
+                checkIcon.classList.add('d-none');
+                copyFeedback.style.display = 'none';
+                copyButton.style.borderColor = '';
+            }, 2000);
+        });
+    });
+});
+
+</script>
+
+
+</html>
